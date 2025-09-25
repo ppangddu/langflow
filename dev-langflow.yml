@@ -1,0 +1,21 @@
+services:
+  langflow-dev:
+    image: langflowai/langflow:latest
+    command: langflow run --host 0.0.0.0 --port 7860
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./flows:/app/flows
+      - langflow_data:/app/langflow
+    networks:
+      - flow-net
+
+volumes:
+  langflow_data:
+
+networks:
+  flow-net:
+    external: true
